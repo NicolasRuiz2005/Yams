@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.Random;
+import java.util.HashMap;
 
 
 public class Yams {
@@ -339,6 +340,61 @@ public static int calculerScore (int[] tabScore, int bonus){
     return score;
 }
 
+public static void caseEssaie(String choix, int[] dee, int[] tabScore, HashMap <String, Integer> scoreMap, boolean choixValide){
+    // Test si le score est déjà placé
+    if(tabScore[scoreMap.get(choix)] != -1){
+        System.out.println("Vous avez déjà placé un score ici");
+    
+    } else {
+        // Sinon on place le score
+        switch ( choix ) {
+
+            default :
+                int choixInt = Integer.parseInt(choix);
+                tabScore[scoreMap.get(choix)] = cas1A6(dee, choixInt);
+                break;
+        
+            case "brelan":
+                tabScore[scoreMap.get(choix)] = casBrelan(dee);
+                break;
+            
+            case "carre":
+                tabScore[scoreMap.get(choix)] = casCarre(dee);
+                break;
+            
+            case "full":
+                tabScore[scoreMap.get(choix)] = casFull(dee);
+                break;
+            
+            case "petite suite":
+                tabScore[scoreMap.get(choix)] = casPetiteSuite(dee);
+                break;
+            
+            case "grande suite":
+                tabScore[scoreMap.get(choix)] = casGrandeSuite(dee);
+                break;
+            
+            case "yams":
+                tabScore[scoreMap.get(choix)] = casYams(dee);
+                break;
+            
+            case "chance":
+                tabScore[scoreMap.get(choix)] = casChance(dee);
+                break;
+
+
+        }
+
+        
+
+
+
+        choixValide = true;
+    }
+    
+}
+
+
 
 
 public static void main(String[] args) {
@@ -350,6 +406,22 @@ public static void main(String[] args) {
     boolean scoreNull = true;       // Booléen pour savoir si tous les scores sont placé ou non et Si oui on sort de la boucle
     boolean choixValide = false;    // Booléen pour savoir si le choix du joueur est valide ou non et Si oui on sort de la boucle pour passer au tour suivant
     int bonus = 0;                  // Bonus du joueur si il a plus de 63 points dans les 6 premières cases
+
+    HashMap <String, Integer> scoreMap = new HashMap<String, Integer>();
+    scoreMap.put("1", 0);
+    scoreMap.put("2", 1);
+    scoreMap.put("3", 2);
+    scoreMap.put("4", 3);
+    scoreMap.put("5", 4);
+    scoreMap.put("6", 5);
+    scoreMap.put("brelan", 6);
+    scoreMap.put("carre", 7);
+    scoreMap.put("full", 8);
+    scoreMap.put("petite suite", 9);
+    scoreMap.put("grande suite", 10);
+    scoreMap.put("yams", 11);
+    scoreMap.put("chance", 12);
+
 
     initialiserTabScore(tabScore); // On initialise le tableau de score à -1 pour savoir plus tard si le score est placé ou non 
 
@@ -367,180 +439,26 @@ public static void main(String[] args) {
         choixValide = false;
         
 
-        while(choixValide == false){
-            choixValide = false;
+        while(!choixValide){
             sc = new Scanner(System.in);
             String choix = sc.nextLine();
             switch ( choix ) {
 
-                case "1" :
-                    // Test si le score est déjà placé
-                    if(tabScore[0] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
+                case "relancer":
+                    if(nbRelanceCase < 3){
+                        nbRelanceCase ++;
+                        int nbRelance = choixNbRelance(sc);
+                        choixDee(nbRelance, sc, dee);
+                    } else {
+                        System.out.println("Vous avez déjà relancé 3 fois");
                     }
-                    // Sinon on place le score
-                    tabScore[0] = cas1A6(dee, 1);
-                    choixValide = true;
                     break;
-
-                case "2" :
-                    // Test si le score est déjà placé
-                    if(tabScore[1] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-                    // Sinon on place le score
-                    tabScore[1] = cas1A6(dee, 2);
-                    choixValide = true;
-                        break;
-
-                case "3" :
-                        // Test si le score est déjà placé
-                    if(tabScore[2] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-                    // Sinon on place le score
-                    tabScore[2] = cas1A6(dee, 3);
-                    choixValide = true;
-                        break;
                 
-                case "4" :
-                    // Test si le score est déjà placé
-                    if(tabScore[3] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-                    // Sinon on place le score
-                    tabScore[3] = cas1A6(dee, 4);
-                    choixValide = true;
-                        break;
-                
-                case "5" :
-                    // Test si le score est déjà placé
-                    if(tabScore[4] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-                    // Sinon on place le score
-                    tabScore[4] = cas1A6(dee, 5);     
-                    choixValide = true;   
-                        break;
-                
-                case "6" :
-                    // Test si le score est déjà placé
-                    if(tabScore[5] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-                    // Sinon on place le score
-                    tabScore[5] = cas1A6(dee, 6);  
-                    choixValide = true;             
-                        break;
-                    
-
-
-                case "brelan" :
-                    // Test si le score est déjà placé
-                    if(tabScore[6] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-
-                    // Sinon on place le score
-                    tabScore[6] = casBrelan(dee);
-                    choixValide = true;
-                        break;
-
-                case "carre" :
-                    // Test si le score est déjà placé
-                    if(tabScore[7] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-                    // Sinon on place le score
-                    tabScore[7] = casCarre(dee);
-                    choixValide = true;
-                        break;
-
-                case "full" :
-                    // Test si le score est déjà placé
-                    if(tabScore[8] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-
-                    // Sinon on place le score
-                    tabScore[8] = casFull(dee);
-                    choixValide = true;
-                        break;
-                
-                case "petite suite" :
-                    // Test si le score est déjà placé
-                    if(tabScore[9] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-
-                    // Sinon on place le score
-                    tabScore[9] = casPetiteSuite(dee);
-                    choixValide = true;
-                        break;
-                
-                case "grande suite" :
-                    // Test si le score est déjà placé
-                    if(tabScore[10] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-
-                    // Sinon on place le score
-                    tabScore[10] = casGrandeSuite(dee);
-                    choixValide = true;
-                        break;
-
-                case "yams" :
-                    // Test si le score est déjà placé
-                    if(tabScore[11] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-
-                    // Sinon on place le score
-                    tabScore[11] = casYams(dee);
-                    choixValide = true;
-                        break;
-                
-                case "chance" :
-                    // Test si le score est déjà placé
-                    if(tabScore[12] != -1){
-                        System.out.println("Vous avez déjà placé un score ici");
-                        break;
-                    }
-
-                    // Sinon on place le score
-                    tabScore[12] = casChance(dee);
-                    choixValide = true;
-                        break;
-                
-                case "relancer" : 
-
-                    if (nbRelanceCase == 2){
-                        System.out.println("Vous avez déjà lancé 3 fois");
-                        break;
-                    }
-                    
-                    int nbRelance = choixNbRelance(sc);
-                    choixDee(nbRelance, sc, dee);
-
-                    nbRelanceCase ++;
+                default :
+                    caseEssaie(choix, dee, tabScore, scoreMap, choixValide);
                     break;
-
-                default:
-                    break;
- 
             }
+
 
             if(choixValide == true){
                 break;
@@ -552,7 +470,6 @@ public static void main(String[] args) {
             afficherScrore(tabScore, bonus);
             System.out.println("Où voulez vous placer votre score ? (1-6, brelan, carre, full, petite suite, grande suite, yams, chance)");
             System.out.println("Ou souhaitez vous relancer ? (relancer)");
-            sc = new Scanner(System.in);
 
         }
 
@@ -577,5 +494,6 @@ public static void main(String[] args) {
     System.out.println("Merci d'avoir joué !");
 
 }
+
 
 }
