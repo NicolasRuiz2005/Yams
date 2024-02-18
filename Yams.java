@@ -202,6 +202,7 @@ public static int verifPair (int [] dee, int triplet){
     return score;
 }
 
+
 public static int casFull (int [] dee){
     int score = 0;
     int verifBrelan = 0;
