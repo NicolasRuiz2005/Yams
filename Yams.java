@@ -10,7 +10,8 @@ public class Yams {
  * @param sc : le scanner pour récupérer le choix du joueur
  */
 public static int choixDeePreq (int relance, Scanner sc){
-    if(relance < 1 || relance > 5){
+
+    while(relance < 1 || relance > 5){
         System.out.println("Veuillez entrer un nombre entre 1 et 5");
         relance = sc.nextInt();
     }
@@ -32,7 +33,7 @@ public static void choixDee (int nbRelance, Scanner sc, int[] dee){
 
      System.out.println("Quel dé voulez vous relancer ? (1-5)");
             int relance = sc.nextInt();
-            dee[relance] = new Random().nextInt(6) + 1;
+            dee[relance -1] = new Random().nextInt(6) + 1;
 
     int cpt = 0;
     while(cpt < nbRelance -1){
@@ -211,7 +212,7 @@ public static int casFull (int [] dee){
     if (verifBrelan != 0){
         verifPair = verifPair(dee, valBrelan);
         if(verifPair != 0){
-            score = verifBrelan + verifPair;
+            score = 25;
             return score;
         }       
     }
@@ -234,11 +235,7 @@ public static int casYams (int [] dee){
         }
 
         if(verif == 5){
-            for(int k =0; k < dee.length ; k++){
-                if(dee[k] == garde){
-                    score += dee[k];
-                }
-            }
+            score = 50;
             return score;
             
         }
@@ -246,6 +243,78 @@ public static int casYams (int [] dee){
         garde = dee[i];
     }
 
+    return score;
+}
+
+public static int casPetiteSuite (int [] dee){
+    int score = 0;
+    int [] tab = new int[5];
+    int cpt = 0;
+    for(int i =0; i < dee.length ; i++){
+        tab[i] = dee[i];
+    }
+
+    for(int i =0; i < tab.length ; i++){
+        for(int j =0; j < tab.length ; j++){
+            if(tab[i] < tab[j]){
+                int temp = tab[i];
+                tab[i] = tab[j];
+                tab[j] = temp;
+            }
+        }
+    }
+
+    for(int i =0; i < tab.length -1 ; i++){
+        if(tab[i] == tab[i+1] -1){
+            cpt ++;
+        }
+    }
+
+    if(cpt == 4){
+        score = 30;
+        return score;
+    }
+
+    return score;
+}
+
+public static int casGrandeSuite(int [] dee){
+    int score = 0;
+    int [] tab = new int[5];
+    int cpt = 0;
+    for(int i =0; i < dee.length ; i++){
+        tab[i] = dee[i];
+    }
+
+    for(int i =0; i < tab.length ; i++){
+        for(int j =0; j < tab.length ; j++){
+            if(tab[i] < tab[j]){
+                int temp = tab[i];
+                tab[i] = tab[j];
+                tab[j] = temp;
+            }
+        }
+    }
+
+    for(int i =0; i < tab.length -1 ; i++){
+        if(tab[i] == tab[i+1] -1){
+            cpt ++;
+        }
+    }
+
+    if(cpt == 5){
+        score = 40;
+        return score;
+    }
+
+    return score;
+}
+
+public static int casChance (int [] dee){
+    int score = 0;
+    for(int i =0; i < dee.length ; i++){
+        score += dee[i];
+    }
     return score;
 }
 
@@ -261,13 +330,13 @@ public static int calcluerBonus (int[] tabScore){
     }
 }
 
-public static void calculerScore (int[] tabScore, int bonus){
+public static int calculerScore (int[] tabScore, int bonus){
     int score = 0;
     for(int i =0; i < tabScore.length ; i++){
         score += tabScore[i];
     }
     score += bonus;
-    System.out.println("Votre score est de : " + score);
+    return score;
 }
 
 
@@ -295,13 +364,15 @@ public static void main(String[] args) {
         System.out.println("Où voulez vous placer votre score ? (1-6, brelan, carre, full, petite suite, grande suite, yams, chance)");
         System.out.println("Ou souhaitez vous relancer ? (relancer)");
         Scanner sc = new Scanner(System.in);
-        
+        choixValide = false;
         
 
         while(choixValide == false){
             choixValide = false;
+            sc = new Scanner(System.in);
             String choix = sc.nextLine();
             switch ( choix ) {
+
                 case "1" :
                     // Test si le score est déjà placé
                     if(tabScore[0] != -1){
@@ -406,14 +477,26 @@ public static void main(String[] args) {
                         break;
                 
                 case "petite suite" :
+                    // Test si le score est déjà placé
+                    if(tabScore[9] != -1){
+                        System.out.println("Vous avez déjà placé un score ici");
+                        break;
+                    }
 
-
+                    // Sinon on place le score
+                    tabScore[9] = casPetiteSuite(dee);
                     choixValide = true;
                         break;
                 
                 case "grande suite" :
+                    // Test si le score est déjà placé
+                    if(tabScore[10] != -1){
+                        System.out.println("Vous avez déjà placé un score ici");
+                        break;
+                    }
 
-
+                    // Sinon on place le score
+                    tabScore[10] = casGrandeSuite(dee);
                     choixValide = true;
                         break;
 
@@ -430,34 +513,52 @@ public static void main(String[] args) {
                         break;
                 
                 case "chance" :
+                    // Test si le score est déjà placé
+                    if(tabScore[12] != -1){
+                        System.out.println("Vous avez déjà placé un score ici");
+                        break;
+                    }
 
-
+                    // Sinon on place le score
+                    tabScore[12] = casChance(dee);
                     choixValide = true;
                         break;
                 
                 case "relancer" : 
 
-                    if (nbRelanceCase == 3){
-                        System.out.println("Vous avez déjà relancé 3 fois");
+                    if (nbRelanceCase == 2){
+                        System.out.println("Vous avez déjà lancé 3 fois");
                         break;
                     }
                     
                     int nbRelance = choixNbRelance(sc);
                     choixDee(nbRelance, sc, dee);
 
-                    afficherDee(dee);
                     nbRelanceCase ++;
                     break;
 
                 default:
                     break;
+ 
             }
+
+            if(choixValide == true){
+                break;
+            }
+
+            nbRelanceCase = 0;
+
+            afficherDee(dee);
+            afficherScrore(tabScore, bonus);
+            System.out.println("Où voulez vous placer votre score ? (1-6, brelan, carre, full, petite suite, grande suite, yams, chance)");
+            System.out.println("Ou souhaitez vous relancer ? (relancer)");
+            sc = new Scanner(System.in);
 
         }
 
 
         int testIfNull = 0;
-        for(int i : tabScore){
+        for(int i=0; i < tabScore.length ; i++){
             if(tabScore[i] != -1){
                 testIfNull ++;
             }
@@ -471,8 +572,9 @@ public static void main(String[] args) {
     }
 
     bonus = calcluerBonus(tabScore);
-    calculerScore(tabScore, bonus);
-    
+    score = calculerScore(tabScore, bonus);
+    System.out.println("Votre score est de : " + score);
+    System.out.println("Merci d'avoir joué !");
 
 }
 
