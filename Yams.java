@@ -101,16 +101,70 @@ public static int cas1A6 (int[] dee, int cas){
     return score;
 }
 
+public static int casBrelan (int[] dee){
+    int score = 0;
+    int indiceGarde = 0;
+    int garde = dee[indiceGarde];
+    int verif = 0;
+
+    for(int i : dee){
+        verif = 0;
+        for(int j : dee){
+            if(garde == dee[j]){
+                verif ++;
+            }
+        }
+
+        if(verif == 3){
+            for(int k : dee){
+                if(dee[k] == garde){
+                    score += dee[k];
+                }
+            }
+            return score;
+            
+        }
+
+        garde = dee[i];
+    }
+
+    return score;
+}
+
+public static int calcluerBonus (int[] tabScore){
+    int score = 0;
+    for(int i = 0; i<6 ; i++){
+        score += tabScore[i];
+    }
+    if(score >= 63){
+        return 35;
+    } else {
+        return 0;
+    }
+}
+
+public static void calculerScore (int[] tabScore, int bonus){
+    int score = 0;
+    for(int i : tabScore){
+        score += tabScore[i];
+    }
+    score += bonus;
+    System.out.println("Votre score est de : " + score);
+}
+
+
 
 public static void main(String[] args) {
 
     int [] dee = new int[5];
     int nbRelanceCase = 0;
     int score = 0;
-    int [] tabScore = new int[14];
+    int [] tabScore = new int[13];
     boolean scoreNull = true;
+    boolean choixValide = false;
+    int bonus = 0;
 
-    initialiserTabScore(tabScore);
+    initialiserTabScore(tabScore); // On initialise le tableau de score à -1 pour savoir plus tard si le score est placé ou non 
 
 
     while(scoreNull){
@@ -120,12 +174,13 @@ public static void main(String[] args) {
 
         afficherScrore(tabScore);
 
-        System.out.println("Où voulez vous placer votre score ? (1-6, bonus, brelan, carre, full, petite suite, grande suite, yams, Chance)");
+        System.out.println("Où voulez vous placer votre score ? (1-6, brelan, carre, full, petite suite, grande suite, yams, Chance)");
         Scanner sc = new Scanner(System.in);
         String choix = sc.nextLine();
         
 
-        while(){
+        while(choixValide == false){
+            choixValide = false;
             switch ( choix ) {
                 case "1" :
                     // Test si le score est déjà placé
@@ -135,6 +190,7 @@ public static void main(String[] args) {
                     }
                     // Sinon on place le score
                     tabScore[0] = cas1A6(dee, 1);
+                    choixValide = true;
                     break;
 
                 case "2" :
@@ -145,7 +201,7 @@ public static void main(String[] args) {
                     }
                     // Sinon on place le score
                     tabScore[1] = cas1A6(dee, 2);
-                        
+                    choixValide = true;
                         break;
 
                 case "3" :
@@ -156,7 +212,7 @@ public static void main(String[] args) {
                     }
                     // Sinon on place le score
                     tabScore[2] = cas1A6(dee, 3);
-
+                    choixValide = true;
                         break;
                 
                 case "4" :
@@ -167,6 +223,7 @@ public static void main(String[] args) {
                     }
                     // Sinon on place le score
                     tabScore[3] = cas1A6(dee, 4);
+                    choixValide = true;
                         break;
                 
                 case "5" :
@@ -176,7 +233,8 @@ public static void main(String[] args) {
                         break;
                     }
                     // Sinon on place le score
-                    tabScore[4] = cas1A6(dee, 5);        
+                    tabScore[4] = cas1A6(dee, 5);     
+                    choixValide = true;   
                         break;
                 
                 case "6" :
@@ -186,40 +244,57 @@ public static void main(String[] args) {
                         break;
                     }
                     // Sinon on place le score
-                    tabScore[5] = cas1A6(dee, 6);               
+                    tabScore[5] = cas1A6(dee, 6);  
+                    choixValide = true;             
                         break;
                     
 
-                case "bonus" :
-
-                        break;
 
                 case "brelan" :
+                    // Test si le score est déjà placé
+                    if(tabScore[6] != 0){
+                        System.out.println("Vous avez déjà placé un score ici");
+                        break;
+                    }
 
+                    // Sinon on place le score
+                    tabScore[6] = casBrelan(dee);
+                    choixValide = true;
                         break;
 
                 case "carre" :
 
+                    choixValide = true;
                         break;
 
                 case "full" :
 
+
+                    choixValide = true;
                         break;
                 
                 case "petite suite" :
-                    
+
+
+                    choixValide = true;
                         break;
                 
                 case "grande suite" :
 
+
+                    choixValide = true;
                         break;
 
                 case "yams" :
 
+
+                    choixValide = true;
                         break;
                 
                 case "Chance" :
 
+
+                    choixValide = true;
                         break;
                 
                 case "Relancer" : 
@@ -238,13 +313,12 @@ public static void main(String[] args) {
 
                     break;
 
-                
-
                 default:
                     break;
             }
 
         }
+
 
         int testIfNull = 0;
         for(int i : tabScore){
@@ -253,12 +327,15 @@ public static void main(String[] args) {
             }
         }
 
-        if(testIfNull == 14){
+        if(testIfNull == 13){
             scoreNull = false;
         }
 
 
     }
+
+    bonus = calcluerBonus(tabScore);
+    calculerScore(tabScore, bonus);
     
 
 }
