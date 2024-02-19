@@ -272,7 +272,7 @@ public static int casPetiteSuite (int [] dee){
         }
     }
 
-    if(cpt == 4){
+    if(cpt == 3){
         score = 30;
         return score;
     }
@@ -304,7 +304,7 @@ public static int casGrandeSuite(int [] dee){
         }
     }
 
-    if(cpt == 5){
+    if(cpt == 4){
         score = 40;
         return score;
     }
@@ -341,7 +341,7 @@ public static int calculerScore (int[] tabScore, int bonus){
     return score;
 }
 
-public static void caseEssaie(String choix, int[] dee, int[] tabScore, HashMap <String, Integer> scoreMap, boolean choixValide){
+public static boolean caseEssaie(String choix, int[] dee, int[] tabScore, HashMap <String, Integer> scoreMap, boolean choixValide){
     // Test si le score est déjà placé
     if(tabScore[scoreMap.get(choix)] != -1){
         System.out.println("Vous avez déjà placé un score ici");
@@ -353,46 +353,51 @@ public static void caseEssaie(String choix, int[] dee, int[] tabScore, HashMap <
             default :
                 int choixInt = Integer.parseInt(choix);
                 tabScore[scoreMap.get(choix)] = cas1A6(dee, choixInt);
+                choixValide = true;
                 break;
         
             case "brelan":
                 tabScore[scoreMap.get(choix)] = casBrelan(dee);
+                choixValide = true;
                 break;
             
             case "carre":
                 tabScore[scoreMap.get(choix)] = casCarre(dee);
+                choixValide = true;
                 break;
             
             case "full":
                 tabScore[scoreMap.get(choix)] = casFull(dee);
+                choixValide = true;
                 break;
             
             case "petite suite":
                 tabScore[scoreMap.get(choix)] = casPetiteSuite(dee);
+                choixValide = true;
                 break;
             
             case "grande suite":
                 tabScore[scoreMap.get(choix)] = casGrandeSuite(dee);
+                choixValide = true;
                 break;
             
             case "yams":
                 tabScore[scoreMap.get(choix)] = casYams(dee);
+                choixValide = true;
                 break;
             
             case "chance":
                 tabScore[scoreMap.get(choix)] = casChance(dee);
+                choixValide = true;
                 break;
 
 
         }
 
-        
-
-
-
         choixValide = true;
     }
     
+    return choixValide;
 }
 
 
@@ -438,7 +443,7 @@ public static void main(String[] args) {
         System.out.println("Ou souhaitez vous relancer ? (relancer)");
         Scanner sc = new Scanner(System.in);
         choixValide = false;
-        
+        nbRelanceCase = 0;
 
         while(!choixValide){
             sc = new Scanner(System.in);
@@ -446,17 +451,17 @@ public static void main(String[] args) {
             switch ( choix ) {
 
                 case "relancer":
-                    if(nbRelanceCase < 3){
+                    if(nbRelanceCase >= 2){
+                        System.out.println("Vous avez déjà relancé 3 fois");
+                    } else {
                         nbRelanceCase ++;
                         int nbRelance = choixNbRelance(sc);
                         choixDee(nbRelance, sc, dee);
-                    } else {
-                        System.out.println("Vous avez déjà relancé 3 fois");
                     }
                     break;
                 
                 default :
-                    caseEssaie(choix, dee, tabScore, scoreMap, choixValide);
+                    choixValide = caseEssaie(choix, dee, tabScore, scoreMap, choixValide);
                     break;
             }
 
@@ -465,7 +470,6 @@ public static void main(String[] args) {
                 break;
             }
 
-            nbRelanceCase = 0;
 
             afficherDee(dee);
             afficherScrore(tabScore, bonus);
