@@ -85,17 +85,60 @@ public static void afficherScrore (int[] tabScore, int bonus){
     System.out.println("Voici votre score : ");
     System.out.println("=============================");
     for(int i =0; i<6 ; i++){
-        System.out.println((i+1) + " : " + tabScore[i]);
+
+        if(tabScore[i] == -1){
+            System.out.println((i+1) + " : " +(tabScore[i] + 1));
+        } else {
+            System.out.println((i+1) + " : " + tabScore[i]);
+        }        
     }
+
     System.out.println("Bonus : " + bonus);
-    System.out.println("Brelan : " + tabScore[6]);
-    System.out.println("Carre : " + tabScore[7]);
-    System.out.println("Full : " + tabScore[8]);
-    System.out.println("Petite suite : " + tabScore[9]);
-    System.out.println("Grande suite : " + tabScore[10]);
-    System.out.println("Yams : " + tabScore[11]);
-    System.out.println("Chance : " + tabScore[12]);
+
+    if(tabScore[6] == -1){
+        System.out.println("Brelan : " + (tabScore[6] + 1));
+    } else {
+        System.out.println("Brelan : " + tabScore[6]);
+    }
+
+    if(tabScore[7] == -1){
+        System.out.println("Carre : " + (tabScore[7] + 1));
+    } else {
+        System.out.println("Carre : " + tabScore[7]);
+    }
+
+    if(tabScore[8] == -1){
+        System.out.println("Full : " + (tabScore[8] + 1));
+    } else {
+        System.out.println("Full : " + tabScore[8]);
+    }
+
+    if(tabScore[9] == -1){
+        System.out.println("Petite suite : " + (tabScore[9] + 1));
+    } else {
+        System.out.println("Petite suite : " + tabScore[9]);
+    }
+
+    if(tabScore[10] == -1){
+        System.out.println("Grande suite : " + (tabScore[10] + 1));
+    } else {
+        System.out.println("Grande suite : " + tabScore[10]);
+    }
+
+    if(tabScore[11] == -1){
+        System.out.println("Yams : " + (tabScore[11] + 1));
+    } else {
+        System.out.println("Yams : " + tabScore[11]);
+    }
+
+    if(tabScore[12] == -1){
+        System.out.println("Chance : " + (tabScore[12] + 1));
+    } else {
+        System.out.println("Chance : " + tabScore[12]);
+    }
     System.out.println("=============================");
+
+    
 }
 
 public static int cas1A6 (int[] dee, int cas){
@@ -201,7 +244,6 @@ public static int verifPair (int [] dee, int triplet){
 
     return score;
 }
-
 
 public static int casFull (int [] dee){
     int score = 0;
@@ -344,8 +386,12 @@ public static int calculerScore (int[] tabScore, int bonus){
 public static boolean caseEssaie(String choix, int[] dee, int[] tabScore, HashMap <String, Integer> scoreMap, boolean choixValide){
     // Test si le score est déjà placé
     if(tabScore[scoreMap.get(choix)] != -1){
+        System.out.println("\n");
+        System.out.println("==========================================");
         System.out.println("Vous avez déjà placé un score ici");
-    
+        System.out.println("==========================================");
+        System.out.println("\n");
+        
     } else {
         // Sinon on place le score
         switch ( choix ) {
@@ -413,7 +459,7 @@ public static void main(String[] args) {
     boolean choixValide = false;    // Booléen pour savoir si le choix du joueur est valide ou non et Si oui on sort de la boucle pour passer au tour suivant
     int bonus = 0;                  // Bonus du joueur si il a plus de 63 points dans les 6 premières cases
 
-    HashMap <String, Integer> scoreMap = new HashMap<String, Integer>();
+    HashMap <String, Integer> scoreMap = new HashMap<String, Integer>(); // Permet de faire correspondre le choix du joueur avec la case du tableau de score
     scoreMap.put("1", 0);
     scoreMap.put("2", 1);
     scoreMap.put("3", 2);
@@ -448,11 +494,18 @@ public static void main(String[] args) {
         while(!choixValide){
             sc = new Scanner(System.in);
             String choix = sc.nextLine();
+            System.out.println("\n");
+            System.out.println("\n");
+
             switch ( choix ) {
 
                 case "relancer":
                     if(nbRelanceCase >= 2){
-                        System.out.println("Vous avez déjà relancé 3 fois");
+                        System.out.println("\n");
+                        System.out.println("==========================================");
+                        System.out.println("!!!  Vous avez déjà relancé 3 fois    !!!");
+                        System.out.println("==========================================");
+                        System.out.println("\n");
                     } else {
                         nbRelanceCase ++;
                         int nbRelance = choixNbRelance(sc);
