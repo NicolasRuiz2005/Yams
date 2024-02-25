@@ -447,12 +447,13 @@ public static boolean caseEssaie(String choix, int[] dee, int[] tabScore, HashMa
 }
 
 public static boolean testBonChoix (String choix){
-    
-    if(choix != "1" && choix != "2" && choix != "3" && choix != "4" && choix != "5" && choix != "6" && choix != "brelan" && choix != "carre" && choix != "full" && choix != "petite suite" && choix != "grande suite" && choix != "yams" && choix != "chance"){
-        return false;
+
+    if(choix.equals("1") || choix.equals("2") || choix.equals("3") || choix.equals("4") || choix.equals("5") || choix.equals("6") || choix.equals("brelan") || choix.equals("carre") || choix.equals("full") || choix.equals("petite suite") || choix.equals("grande suite") || choix.equals("yams") || choix.equals("chance") || choix.equals("r") || choix.equals("R")){
+       return true;
     } else {
-        return true;
+        return false;
     }
+
 }
 
 
@@ -502,41 +503,41 @@ public static void main(String[] args) {
             sc = new Scanner(System.in);
             String choix = sc.nextLine();
 
-            switch ( choix ) {
+            // On test si le joueur rentre autre chose que les choix possible
+            boolean test = testBonChoix(choix);
+            if(test == false){
+                System.out.println("\n");
+                System.out.println("==========================================");
+                System.out.println("!!!    Votre choix n'est pas valide    !!!");
+                System.out.println("==========================================");
+                System.out.println("\n");
+            } else {
+                switch ( choix ) {
 
-                case "r":
-                case "R":
-                    if(nbRelanceCase >= 2){
-                        System.out.println("\n");
-                        System.out.println("==========================================");
-                        System.out.println("!!!  You have already rerolled 3 times  !!!");
-                        System.out.println("==========================================");
-                        System.out.println("\n");
-                    } else {
-                        nbRelanceCase ++;
-                        int nbRelance = choixNbRelance(sc);
-                        choixDee(nbRelance, sc, dee);
-                        System.out.println("\n");
-                    }
-                    break;
-                
-                default :
-                    // On test si le joueur rentre autre chose que les choix possible
+                    case "r":
+                    case "R":
+                        if(nbRelanceCase >= 2){
+                            System.out.println("\n");
+                            System.out.println("==========================================");
+                            System.out.println("!!!    Vous avez déjà relancé 3 fois   !!!");
+                            System.out.println("==========================================");
+                            System.out.println("\n");
+                        } else {
+                            nbRelanceCase ++;
+                            int nbRelance = choixNbRelance(sc);
+                            choixDee(nbRelance, sc, dee);
+                            System.out.println("\n");
+                        }
+                        break;
                     
-                    if(testBonChoix(choix) == false){
+                    default :
                         System.out.println("\n");
-                        System.out.println("==========================================");
-                        System.out.println("!!!    Votre choix n'est pas valide    !!!");
-                        System.out.println("==========================================");
-                        System.out.println("\n");
-                    } else {
-                         System.out.println("\n");
                         choixValide = caseEssaie(choix, dee, tabScore, scoreMap, choixValide);
+                            
                         
-                    }
-                    
-                    break;
-            }
+                        break;
+                }
+        }
 
 
             if(choixValide == true){
@@ -569,6 +570,8 @@ public static void main(String[] args) {
 
     
     score = calculerScore(tabScore, bonus);
+    System.out.println("==========================================");
+    System.out.println("La partie est terminée !");
     System.out.println("Votre score est de : " + score);
     System.out.println("Merci d'avoir joué !");
 
