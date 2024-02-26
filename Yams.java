@@ -67,12 +67,12 @@ public static void lanceDee (int[] dee){
 
 public static void afficherDee (int[] dee){
     System.out.println("Voici vos dés : ");
-    System.out.println("=============================");
+    System.out.println("============================================================================================================");
     for(int i = 0; i<5 ; i++){
-        System.out.print("Dé " + (i+1) + " : " + dee[i]+ "  |  ");
+        System.out.print("Dé " + (i+1) + " : " + dee[i]+ "       |       ");
     }
     System.out.println();
-    System.out.println("=============================");
+    System.out.println("============================================================================================================");
 }
 
 public static void initialiserTabScore (int[] tabScore){
@@ -438,6 +438,7 @@ public static boolean caseEssaie(String choix, int[] dee, int[] tabScore, HashMa
                 break;
 
 
+
         }
 
         choixValide = true;
@@ -490,7 +491,7 @@ public static void main(String[] args) {
 
         lanceDee(dee);
         afficherDee(dee);
-
+        System.out.println("\n");
         afficherScrore(tabScore, bonus);
 
         System.out.println("Où voulez vous placer votre score ? (1-6, brelan, carre, full, petite suite, grande suite, yams, chance)");
