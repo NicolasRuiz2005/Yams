@@ -6,6 +6,4 @@
 - Interface complète du jeu 
 
 
-# </br>
-
 # 🎲🎲 Yams Game in french
